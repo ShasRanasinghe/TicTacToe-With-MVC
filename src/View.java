@@ -34,6 +34,9 @@ public class View extends JFrame implements Observer{
 	private JLabel outputArea;
 	private JButton[][] button;
 	
+	/**
+	 * Contructor
+	 */
 	public View(){
 		super(TITLE);
 		setLayout(new BorderLayout());
@@ -46,6 +49,9 @@ public class View extends JFrame implements Observer{
 		
 	}
 
+	/**
+	 * Build the frame with all its components
+	 */
 	private void makeFrame() {
 		outputArea = new JLabel(gameStatus.getLabelString());
 		outputArea.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,6 +64,11 @@ public class View extends JFrame implements Observer{
 		addButtons(panel);
 	}
 
+	/**
+	 * Build the grid of buttons
+	 * 
+	 * @param panel The panel to build on
+	 */
 	private void addButtons(JPanel panel) {
 		button = new JButton[COLUMNS][ROWS];
 		for(int i = 0;i<ROWS;i++){
@@ -70,6 +81,12 @@ public class View extends JFrame implements Observer{
 		}
 	}
 	
+	/**
+	 * set controller as the action listener to each button
+	 * Done in a separate method so the view does not know about the controller
+	 * 
+	 * @param controller
+	 */
 	public void setController(Controller controller){
 		for(int i = 0;i<ROWS;i++){
 			for(int j = 0;j<COLUMNS;j++){
@@ -94,14 +111,25 @@ public class View extends JFrame implements Observer{
 		}
 	}
 
+	/**
+	 * @return The number of columns in the grid
+	 */
 	public static int getColumns() {
 		return COLUMNS;
 	}
 
+	/**
+	 * @return the number of rows in the grid
+	 */
 	public static int getRows() {
 		return ROWS;
 	}
 
+	/**
+	 * Set the text of the button clicked
+	 * 
+	 * @param button The button last clicked
+	 */
 	public void setButtonText(JButton button) {
 		button.setText(gameStatus.getEnumString());
 		Font font = new Font("large",Font.BOLD,button.getSize().height);
@@ -109,6 +137,9 @@ public class View extends JFrame implements Observer{
 		button.setEnabled(false);
 	}
 	
+	/**
+	 * Reset the game for the next round
+	 */
 	private void reset() {
 		gameStatus = GameStatus.PLAYER_1;
 		outputArea.setText(gameStatus.getLabelString());

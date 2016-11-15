@@ -10,12 +10,24 @@ public class Model extends Observable {
 	
 	public Model(){}
 	
+	/**
+	 * Create an array to store the user inputs to test
+	 * 
+	 * @param rows
+	 * @param columns
+	 */
 	public void InitializeArray(int rows, int columns) {
 		board = new GameStatus[rows][columns];
 		board_rows = rows;
 		board_columns = columns;
 	}
 
+	/**
+	 * Update the button when it is clicked
+	 * 
+	 * @param row
+	 * @param column
+	 */
 	public void updateButton(int row, int column) {
 		board[row][column] = gameStatus;
 		if(isGameOver()){
@@ -35,6 +47,9 @@ public class Model extends Observable {
 		}
 	}
 
+	/**
+	 * Choose which player is playing next
+	 */
 	private void switchPlayer() {
 		if(gameStatus == GameStatus.PLAYER_1){
 			gameStatus = GameStatus.PLAYER_2;
@@ -43,6 +58,11 @@ public class Model extends Observable {
 		}
 	}
 
+	/**
+	 * Check if the game is over
+	 * 
+	 * @return true if yes, false otherwise
+	 */
 	private boolean isGameOver() {
 		int sumDiagonalLR = 0;
         int sumDiagonalRL = 0;
@@ -114,6 +134,11 @@ public class Model extends Observable {
         return false;
 	}
 	
+	/**
+	 * Check if all the buttons have been clicked
+	 * 
+	 * @return true if full, false otherwise
+	 */
 	private boolean isFull() {
 		for(int i = 0;i<board_rows;i++){
 			for(int j = 0;j<board_columns;j++){
@@ -123,6 +148,9 @@ public class Model extends Observable {
 		return true;
 	}
 
+	/**
+	 * Clear the results table for the next game
+	 */
 	private void clearBoard() {
 		for(int i = 0;i<board_rows;i++){
 			for(int j = 0;j<board_columns;j++){
