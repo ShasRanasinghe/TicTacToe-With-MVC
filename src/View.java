@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.Observable;
@@ -103,7 +104,10 @@ public class View extends JFrame implements Observer{
 
 	public void setButtonText(JButton button) {
 		button.setText(gameStatus.getEnumString());
+		Font font = new Font("large",Font.BOLD,button.getSize().height);
+		button.setFont(font);
 		button.setEnabled(false);
+		repaint();
 	}
 	
 	private void reset() {

@@ -12,8 +12,8 @@ public class Model extends Observable {
 	
 	public void InitializeArray(int rows, int columns) {
 		board = new GameStatus[rows][columns];
-		board_rows = rows-1;
-		board_columns = columns-1;
+		board_rows = rows;
+		board_columns = columns;
 	}
 
 	public void updateButton(int row, int column) {
@@ -48,11 +48,11 @@ public class Model extends Observable {
         int sumDiagonalRL = 0;
         int sumColumns = 0;
         int sumRows = 0;
-        GameStatus lastBoardPosition = board[0][0];
+        GameStatus lastBoardPosition;
         
-        for (int i = 0; i <= board_rows; i++) {
+        lastBoardPosition = board[0][0];
+        for (int i = 0; i < board_rows; i++) {
         	if(lastBoardPosition == board[i][i] && board[i][i] != null){
-        		lastBoardPosition = board[i][i];
         		sumDiagonalLR ++;
         		if(sumDiagonalLR == 3){
         			gameStatus = board[i][i];
@@ -64,9 +64,8 @@ public class Model extends Observable {
         }
         
         lastBoardPosition = board[0][2];
-        for (int i = 0; i <= board_rows; i++) {
+        for (int i = 0; i < board_rows; i++) {
         	if(lastBoardPosition == board[i][2 - i] && board[i][2 - i] != null){
-        		lastBoardPosition = board[i][2 - i];
         		sumDiagonalRL ++;
         		if(sumDiagonalRL == 3){
         			gameStatus = board[i][2-i];
@@ -77,28 +76,34 @@ public class Model extends Observable {
         	break;
         }
         
-        for (int i = 0; i <= board_rows; i++) {
+        for (int i = 0; i < board_rows; i++) {
         	lastBoardPosition = board[i][i];
-            for (int j = 0; j <= board_columns; j++) {
+            for (int j = 0; j < board_columns; j++) {
             	if(lastBoardPosition == board[i][j] && board[i][j] != null){
-            		lastBoardPosition = board[i][j];
-            		sumColumns ++;
-            		if(sumColumns == 3){
+            		sumRows ++;
+            		if(sumRows == 3){
             			gameStatus = board[i][j];
             			return true;
             		}
+            		continue;
             	}
+                sumRows = 0;
+            	break;
+            }
+        }
+        
+        for (int i = 0; i < board_rows; i++) {
+        	lastBoardPosition = board[i][i];
+            for (int j = 0; j < board_columns; j++) {
             	if(lastBoardPosition == board[j][i] && board[j][i] != null){
-            		lastBoardPosition = board[j][i];
-            		sumRows ++;
-            		if(sumRows == 3){
+            		sumColumns ++;
+            		if(sumColumns == 3){
             			gameStatus = board[j][i];
             			return true;
             		}
             		continue;
             	}
             	sumColumns = 0;
-                sumRows = 0;
             	break;
             }
         }
@@ -112,7 +117,7 @@ public class Model extends Observable {
 	private boolean isFull() {
 		for(int i = 0;i<board_rows;i++){
 			for(int j = 0;j<board_columns;j++){
-				if(board[i][j] != null){return false;}
+				if(board[i][j] == null){return false;}
 			}
 		}
 		return true;
