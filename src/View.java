@@ -107,7 +107,6 @@ public class View extends JFrame implements Observer{
 		Font font = new Font("large",Font.BOLD,button.getSize().height);
 		button.setFont(font);
 		button.setEnabled(false);
-		repaint();
 	}
 	
 	private void reset() {
