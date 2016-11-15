@@ -103,6 +103,7 @@ public class View extends JFrame implements Observer{
 
 	public void setButtonText(JButton button) {
 		button.setText(gameStatus.getEnumString());
+		button.setEnabled(false);
 	}
 	
 	private void reset() {
@@ -111,6 +112,7 @@ public class View extends JFrame implements Observer{
 		for(int i = 0;i<ROWS;i++){
 			for(int j = 0;j<COLUMNS;j++){
 				button[i][j].setText("");
+				button[i][j].setEnabled(true);
 			}
 		}
 		
