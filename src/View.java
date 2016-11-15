@@ -8,10 +8,12 @@ import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+@SuppressWarnings("serial")
 public class View extends JFrame implements Observer{
 
 	//Dimensions
@@ -21,10 +23,11 @@ public class View extends JFrame implements Observer{
 	
 	//Constants
 	private static final String TITLE = "Tic Tac Toe";
-	private static final String PLAYER_1_TURN = "PLAYER 1! YOU ARE THE CAPTAIN NOW!!";
-	private static final String PLAYER_2_TURN = "PLAYER 2! YOU ARE THE CAPTAIN NOW!!";
 	private static final int COLUMNS = 3;
 	private static final int ROWS = 3;
+	
+	//Variables
+	private GameStatus gameStatus = GameStatus.PLAYER_1;
 	
 	//Frame Items
 	private JLabel outputArea;
@@ -43,7 +46,7 @@ public class View extends JFrame implements Observer{
 	}
 
 	private void makeFrame() {
-		outputArea = new JLabel(PLAYER_1_TURN);
+		outputArea = new JLabel(gameStatus.getLabelString());
 		outputArea.setHorizontalAlignment(SwingConstants.CENTER);
 		add(outputArea, BorderLayout.NORTH);
 		
@@ -58,17 +61,58 @@ public class View extends JFrame implements Observer{
 		button = new JButton[COLUMNS][ROWS];
 		for(int i = 0;i<ROWS;i++){
 			for(int j = 0;j<COLUMNS;j++){
-				button[i][j] = new JButton("");
+				button[i][j] = new JButton();
 				panel.add(button[i][j]);
-				button[i][j].addActionListener(new Controller(i,j));
-				button[i][j].set
+				button[i][j].putClientProperty("ROW",new Integer(i));
+				button[i][j].putClientProperty("COLUMN",new Integer(j));
+			}
+		}
+	}
+	
+	public void setController(Controller controller){
+		for(int i = 0;i<ROWS;i++){
+			for(int j = 0;j<COLUMNS;j++){
+				button[i][j].addActionListener(controller);
 			}
 		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		gameStatus = (GameStatus)arg;
+		outputArea.setText(gameStatus.getLabelString());
+		if(gameStatus == GameStatus.DRAW 
+				|| gameStatus == GameStatus.PLAYER_1_WON
+				||gameStatus == GameStatus.PLAYER_2_WON){
+			JOptionPane.showMessageDialog(this,
+					gameStatus.getEnumString(),
+					"GAME OVER",
+					JOptionPane.INFORMATION_MESSAGE);
+			
+			reset();
+		}
+	}
+
+	public static int getColumns() {
+		return COLUMNS;
+	}
+
+	public static int getRows() {
+		return ROWS;
+	}
+
+	public void setButtonText(JButton button) {
+		button.setText(gameStatus.getEnumString());
+	}
+	
+	private void reset() {
+		gameStatus = GameStatus.PLAYER_1;
+		outputArea.setText(gameStatus.getLabelString());
+		for(int i = 0;i<ROWS;i++){
+			for(int j = 0;j<COLUMNS;j++){
+				button[i][j].setText("");
+			}
+		}
 		
 	}
 }
